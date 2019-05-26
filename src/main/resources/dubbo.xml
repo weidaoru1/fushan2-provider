@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:dubbo="http://code.alibabatech.com/schema/dubbo"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://code.alibabatech.com/schema/dubbo
+       http://code.alibabatech.com/schema/dubbo/dubbo.xsd">
+
+    <!-- 服务提供方应用名，用于计算依赖关系 -->
+    <dubbo:application name="fushan2-provider" owner="fushan2-provider" />
+
+    <!-- 定义 zookeeper 注册中心地址及协议 -->
+    <dubbo:registry protocol="zookeeper" address="192.168.1.103:2181"
+                    client="zkclient" />
+
+    <!-- 定义 Dubbo 协议名称及使用的端口，dubbo 协议缺省端口为 20880，如果配置为 -1 或者没有配置 port，则会分配一个没有被占用的端口 -->
+    <dubbo:protocol name="dubbo" port="-1" />
+
+    <!-- 暴露dubbo服务的方式一-->
+    <!-- 使用注解方式暴露接口，会自动扫描package下所有包中dubbo相关的注解，这样就不用在xml中再针对每个服务接口配置dubbo:service interface-->
+    <!--<dubbo:annotation package="com.springboot2provider.service"/>-->
+
+    <!-- 暴露dubbo服务的方式二-->
+    <!-- 声明需要暴露的服务接口 -->
+    <dubbo:service interface="com.fushan2api.service.cost.PaymentInfoService"
+                   ref="paymentInfoService" timeout="10000" loadbalance="random"/>
+    <dubbo:service interface="com.fushan2api.service.cost.PaymentRecordService"
+                   ref="paymentRecordService" timeout="10000" loadbalance="random"/>
+    <dubbo:service interface="com.fushan2api.service.cost.SpendInfoService"
+                   ref="spendInfoService" timeout="10000" loadbalance="random"/>
+    <dubbo:service interface="com.fushan2api.service.cost.SpendRecordService"
+                   ref="spendRecordService" timeout="10000" loadbalance="random"/>
+    <dubbo:service interface="com.fushan2api.service.menu.MenuChildrenService"
+                   ref="menuChildrenService" timeout="10000" loadbalance="random"/>
+    <dubbo:service interface="com.fushan2api.service.menu.MenuInfoService"
+                   ref="menuInfoService" timeout="10000" loadbalance="random"/>
+    <dubbo:service interface="com.fushan2api.service.role.RoleInfoService"
+                   ref="roleInfoService" timeout="10000" loadbalance="random"/>
+    <dubbo:service interface="com.fushan2api.service.role.RoleUserService"
+                   ref="roleUserService" timeout="10000" loadbalance="random"/>
+    <dubbo:service interface="com.fushan2api.service.user.UserInfoService"
+                   ref="userInfoService" timeout="10000" loadbalance="random"/>
+
+    <!-- 和本地 bean 一样实现服务 -->
+    <bean id="paymentInfoService" class="com.fushan2provider.service.cost.PaymentInfoServiceImpl" />
+    <bean id="paymentRecordService" class="com.fushan2provider.service.cost.PaymentRecordServiceImpl" />
+    <bean id="spendInfoService" class="com.fushan2provider.service.cost.SpendInfoServiceImpl" />
+    <bean id="spendRecordService" class="com.fushan2provider.service.cost.SpendRecordServiceImpl" />
+    <bean id="menuChildrenService" class="com.fushan2provider.service.menu.MenuChildrenServiceImpl" />
+    <bean id="menuInfoService" class="com.fushan2provider.service.menu.MenuInfoServiceImpl" />
+    <bean id="roleInfoService" class="com.fushan2provider.service.role.RoleInfoServiceImpl" />
+    <bean id="roleUserService" class="com.fushan2provider.service.role.RoleUserServiceImpl" />
+    <bean id="userInfoService" class="com.fushan2provider.service.user.UserInfoServiceImpl" />
+
+</beans>
